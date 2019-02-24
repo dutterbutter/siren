@@ -4,7 +4,8 @@
   "description": "Conversational chatbot for reminders",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ignore-path .gitignore ."
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,17 @@
   "bugs": {
     "url": "https://github.com/dutterbutter/siren/issues"
   },
-  "homepage": "https://github.com/dutterbutter/siren#readme"
+  "homepage": "https://github.com/dutterbutter/siren#readme",
+  "dependencies": {
+    "apiai": "^4.0.3",
+    "axios": "^0.18.0",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "moment": "^2.24.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "eslint-config-strongloop": "^2.1.0"
+  }
 }
