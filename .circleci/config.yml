@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/siren
+    docker:
+      - image: circleci/node:8.9.4
+#      - image: mongo:3.4.4 # and this image as the secondary service container
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - run:
+          name: install-npm
+          command: npm install
+      - run: # run tests
+          name: lint
+          command: npm run lint
+#      - run: # run coverage report
+#          name: code-coverage
+#          command: './node_modules/.bin/nyc report --reporter=text-lcov'
