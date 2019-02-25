@@ -62,3 +62,6 @@ typings/
 
 # IDE Editor Files
 .idea/
+
+# data logs
+data/db/*

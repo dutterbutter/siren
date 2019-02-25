@@ -61,6 +61,7 @@ const handleApiAiResponse = (sender, response) => {
   let action = response.result.action;
   let contexts = response.result.contexts;
   let parameters = response.result.parameters;
+  let isComplete = response.result.actionIncomplete;
 
   util.sendTypingOff(sender);
 
@@ -73,7 +74,7 @@ const handleApiAiResponse = (sender, response) => {
     );
   } else if (util.isDefined(action)) {
     trigger.handleApiAiAction(
-      sender, action, responseText, contexts, parameters
+      sender, action, responseText, contexts, parameters, isComplete
     );
   } else if (util.isDefined(responseData) &&
       util.isDefined(responseData.facebook)) {
@@ -113,11 +114,9 @@ const callSendAPI = async(messageData) => {
       let recipientId = response.data.recipient_id;
       let messageId = response.data.message_id;
       if (messageId) {
-        logger.logInfo(`
-        Successfully sent ${messageId} to recipient ${recipientId}
-        `);
+        logger.logInfo(`sent ${messageId} to recipient ${recipientId}`);
       } else {
-        logger.logInfo(`Successfully API for recipient ${recipientId}`);
+        logger.logInfo(`successfully API for recipient ${recipientId}`);
       }
     }
   } catch (error) {
