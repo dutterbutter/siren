@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const msg = require('../messaging');
 const s = require('./util');
+const t = require('../../core/templates');
 const logger = require('../../logger/logger');
 const Reminder = mongoose.model('ReminderModel');
 
@@ -41,10 +42,9 @@ const putReminder = async(params, sender) => {
 
 const getReminder = async(params, sender) => {
   // let docs = s.parse(params);
-  console.log(params);
 
   let response = await Reminder.find({user: sender});
-  console.log(response);
+  t.listFormatter(sender, response);
 };
 
 const delReminder = async(params, sender) => {

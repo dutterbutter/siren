@@ -18,6 +18,12 @@ const MONGO_CONNECTION_STRING = 'mongodb://localhost:27017/data';
 mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true });
 const connection = mongoose.connection;
 
+// setInterval(() => {
+//         console.log("Checking for reminders to alert... (every 60 sec)");
+//
+//     }, 60000
+// );
+
 connection.on('open', () => {
   logger.logInfo('connected to mongo...');
   app.listen(PORT, _ => {

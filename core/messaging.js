@@ -108,8 +108,8 @@ const sendTextMessage = async(recipientId, text) => {
 const callSendAPI = async(messageData) => {
   const url = 'https://graph.facebook.com/v3.0/me/messages?access_token='
       + process.env.FB_PAGE_ACCESS;
-  const response = await axios.post(url, messageData);
   try {
+    const response = await axios.post(url, messageData);
     if (response.status === 200) {
       let recipientId = response.data.recipient_id;
       let messageId = response.data.message_id;
@@ -121,6 +121,7 @@ const callSendAPI = async(messageData) => {
     }
   } catch (error) {
     logger.logError(error.response.headers);
+    console.log('errrrrrr', error);
   }
 };
 
