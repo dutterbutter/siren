@@ -38,6 +38,17 @@ const receivedMsg = (event) => {
   }
 };
 
+const receivedPostback = (e) => {
+  let senderID = e.sender.id;
+  let recipientID = e.recipient.id;
+  // let timeOfMessage = e.timestamp;
+  let payload = e.postback.payload;
+  if (!sessionIds.has(senderID)) {
+    sessionIds.set(senderID, uuid.v1());
+  }
+  trigger.handleApiPostBack(senderID, recipientID, payload);
+};
+
 const sendToApiAi = (sender, text) => {
   util.sendTypingOn(sender);
   let apiaiRequest = apiAiService.textRequest(text, {
@@ -128,4 +139,5 @@ const callSendAPI = async(messageData) => {
 module.exports.receivedMsg = receivedMsg;
 module.exports.sendTextMessage = sendTextMessage;
 module.exports.callSendAPI = callSendAPI;
-// module.exports.receivedPostback = receivedPostback;
+module.exports.receivedPostback = receivedPostback;
+module.exports.sendToApiAi = sendToApiAi;

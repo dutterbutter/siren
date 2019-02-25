@@ -1,5 +1,6 @@
 'use strict';
 const mongoose = require('mongoose');
+const moment = require('moment');
 const msg = require('../messaging');
 const s = require('./util');
 const t = require('../../core/templates');
@@ -16,7 +17,8 @@ const insertReminder = (params, sender) => {
     user: sender,
   }).save()
     .then(r => {
-      let text = `Reminder ${r.name} created for ${r.date}`;
+      let dateF = moment.utc(r.date).format('dddd, MMMM Do YYYY, h:mm:ss a');
+      let text = `Reminder ${r.name} created for ${dateF}`;
       msg.sendTextMessage(sender, text);
     })
     .catch(err => {

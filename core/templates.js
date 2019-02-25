@@ -2,8 +2,7 @@
 let call = require('./messaging');
 const moment = require('moment');
 
-const getReminderTemplate = async(recID, elem) => {
-  console.log(elem);
+const sirenReminderTemplate = async(recID, elem) => {
   let messageData = {
     recipient: {
       id: recID,
@@ -17,16 +16,16 @@ const getReminderTemplate = async(recID, elem) => {
             {
               title: 'Reminder',
               image_url: './assets/reminder.jpg',
-              subtitle: 'These are your reminders.',
+              subtitle: 'Your reminder NAME !',
               buttons: [
                 {
-                  type: 'web_url',
-                  url: 'https://petersfancybrownhats.com',
-                  title: 'View Website',
+                  type: 'postback',
+                  title: 'Confirm',
+                  payload: 'REM_CONFIRM',
                 }, {
                   type: 'postback',
-                  title: 'Start Chatting',
-                  payload: 'DEVELOPER_DEFINED_PAYLOAD',
+                  title: 'Snooze',
+                  payload: 'REM_SNOOZE',
                 },
               ],
             },
@@ -41,11 +40,11 @@ const getReminderTemplate = async(recID, elem) => {
 const listFormatter = (recipientId, reminders) => {
   const el = reminders.map((r, i) => {
     let momentDate = moment.utc(r.date.toISOString());
-    let date = momentDate.format('YYYY-MM-DD hh:mm:ss A Z');
+    let date = momentDate.format('dddd, MMMM Do YYYY, h:mm:ss a');
 
     return {
-      title: `${r.name} ⏰`,
-      subtitle: date.slice(0, -6),
+      title: `🚨 ${r.name}`,
+      subtitle: date,
     };
   });
 
@@ -73,6 +72,31 @@ const sendListMessage = async(recipientId, elements) => {
   await call.callSendAPI(messageData);
 };
 
-module.exports.getReminderTemplate = getReminderTemplate;
+const askTemplate = (text) => {
+  return {
+    attachment: {
+      type: 'template',
+      payload: {
+        template_type: 'button',
+        text: text,
+        buttons: [
+          {
+            type: 'postback',
+            title: 'Set Reminder',
+            payload: 'SET_REM',
+          },
+          {
+            type: 'postback',
+            title: 'Ignore',
+            payload: 'IGNORE',
+          },
+        ],
+      },
+    },
+  };
+};
+
+module.exports.sirenReminderTemplate = sirenReminderTemplate;
 module.exports.sendListMessage = sendListMessage;
 module.exports.listFormatter = listFormatter;
+module.exports.askTemplate = askTemplate;

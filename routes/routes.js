@@ -23,7 +23,7 @@ module.exports = (app) => {
           if (msgEvent.message) {
             msg.receivedMsg(msgEvent);
           } else if (msgEvent.postback) {
-            // receivePost(msgEvent)
+            msg.receivedPostback(msgEvent);
           } else {
             logger.logError(`unknown event ${msgEvent}`);
           }

@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment');
 
 const parse = (params) => {
   let newDate;
@@ -12,6 +13,12 @@ const parse = (params) => {
     let time = params['date-time-new'];
 
     return [name, date, reoccurance, time];
+  }
+  console.log(params);
+  console.log(params['date-time']);
+  if (params['date-time'].length <= 8){
+    let d = moment().startOf('day') + 'T' + params['date-time'];
+    console.log('dddd', d);
   }
   let name = params.name;
   let date = params['date-time'];
