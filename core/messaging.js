@@ -114,9 +114,9 @@ const callSendAPI = async(messageData) => {
       let recipientId = response.data.recipient_id;
       let messageId = response.data.message_id;
       if (messageId) {
-        logger.logInfo(`Successfully sent ${messageId} to recipient ${recipientId}`);
+        logger.logInfo(`sent ${messageId} to recipient ${recipientId}`);
       } else {
-        logger.logInfo(`Successfully API for recipient ${recipientId}`);
+        logger.logInfo(`successfully API for recipient ${recipientId}`);
       }
     }
   } catch (error) {
