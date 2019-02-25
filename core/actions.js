@@ -1,13 +1,10 @@
 'use strict';
 const msg = require('./messaging');
 const ops = require('../core/db/ops');
+const temp = require('./templates');
 
 const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
   switch (act) {
-    case 'send-text':
-      let responseTextt = 'This is example of Text message.';
-      msg.sendTextMessage(sender, responseTextt);
-      break;
     case 'reminders.add':
       msg.sendTextMessage(sender, text);
       if (!flag) { ops.insertReminder(param, sender); }
@@ -44,9 +41,40 @@ const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
       break;
     default:
       // unhandled action, just send back the text
-
       msg.sendTextMessage(sender, text);
   }
 };
 
+const handleApiPostBack = async(sender, recipient, payload) => {
+  switch (payload) {
+    case 'SET_REM':
+      let text = 'Set a reminder';
+      msg.sendToApiAi(sender, text);
+      break;
+    case 'IGNORE':
+      let res = 'Okay not a problem!';
+      msg.sendTextMessage(sender, res);
+      break;
+    case 'SHOW_ALL_REM':
+      msg.sendToApiAi(sender, 'get all reminders');
+      break;
+    case 'REMOVE_REM':
+      msg.sendToApiAi(sender, 'remove a reminder');
+      break;
+    case 'UPDATE_REM':
+      msg.sendToApiAi(sender, 'reschedule a reminder');
+      break;
+    case 'GET_STARTED':
+      let response = temp.askTemplate('Would you like to set a reminder?');
+      let messageData = {
+        recipient: {
+          id: sender,
+        },
+        message: response,
+      };
+      await msg.callSendAPI(messageData);
+  }
+};
+
 module.exports.handleApiAiAction = handleApiAiAction;
+module.exports.handleApiPostBack = handleApiPostBack;

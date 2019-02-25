@@ -38,6 +38,17 @@ const receivedMsg = (event) => {
   }
 };
 
+const receivedPostback = (e) => {
+  let senderID = e.sender.id;
+  let recipientID = e.recipient.id;
+  // let timeOfMessage = e.timestamp;
+  let payload = e.postback.payload;
+  if (!sessionIds.has(senderID)) {
+    sessionIds.set(senderID, uuid.v1());
+  }
+  trigger.handleApiPostBack(senderID, recipientID, payload);
+};
+
 const sendToApiAi = (sender, text) => {
   util.sendTypingOn(sender);
   let apiaiRequest = apiAiService.textRequest(text, {
@@ -108,8 +119,8 @@ const sendTextMessage = async(recipientId, text) => {
 const callSendAPI = async(messageData) => {
   const url = 'https://graph.facebook.com/v3.0/me/messages?access_token='
       + process.env.FB_PAGE_ACCESS;
-  const response = await axios.post(url, messageData);
   try {
+    const response = await axios.post(url, messageData);
     if (response.status === 200) {
       let recipientId = response.data.recipient_id;
       let messageId = response.data.message_id;
@@ -121,10 +132,12 @@ const callSendAPI = async(messageData) => {
     }
   } catch (error) {
     logger.logError(error.response.headers);
+    console.log('errrrrrr', error);
   }
 };
 
 module.exports.receivedMsg = receivedMsg;
 module.exports.sendTextMessage = sendTextMessage;
 module.exports.callSendAPI = callSendAPI;
-// module.exports.receivedPostback = receivedPostback;
+module.exports.receivedPostback = receivedPostback;
+module.exports.sendToApiAi = sendToApiAi;

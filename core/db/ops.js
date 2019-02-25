@@ -1,7 +1,9 @@
 'use strict';
 const mongoose = require('mongoose');
+const moment = require('moment');
 const msg = require('../messaging');
 const s = require('./util');
+const t = require('../../core/templates');
 const logger = require('../../logger/logger');
 const Reminder = mongoose.model('ReminderModel');
 
@@ -15,7 +17,8 @@ const insertReminder = (params, sender) => {
     user: sender,
   }).save()
     .then(r => {
-      let text = `Reminder ${r.name} created for ${r.date}`;
+      let dateF = moment.utc(r.date).format('dddd, MMMM Do YYYY, h:mm:ss a');
+      let text = `Reminder ${r.name} created for ${dateF}`;
       msg.sendTextMessage(sender, text);
     })
     .catch(err => {
@@ -41,10 +44,9 @@ const putReminder = async(params, sender) => {
 
 const getReminder = async(params, sender) => {
   // let docs = s.parse(params);
-  console.log(params);
 
   let response = await Reminder.find({user: sender});
-  console.log(response);
+  t.listFormatter(sender, response);
 };
 
 const delReminder = async(params, sender) => {
