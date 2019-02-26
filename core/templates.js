@@ -1,22 +1,23 @@
 'use strict';
-let call = require('./messaging');
+const send = require('./calls');
 const moment = require('moment');
 
-const sirenReminderTemplate = async(recID, elem) => {
-  let messageData = {
-    recipient: {
-      id: recID,
-    },
-    message: {
-      attachment: {
-        type: 'template',
-        payload: {
-          template_type: 'generic',
-          elements: [
-            {
-              title: 'Reminder',
-              image_url: './assets/reminder.jpg',
-              subtitle: 'Your reminder NAME !',
+const sirenReminderTemplate = async(params) => {
+  const messageData = params.map((r) => {
+    let momentDate = moment.utc(r.date.toISOString());
+    let date = momentDate.format('dddd, MMMM Do YYYY, h:mm:ss a');
+    return {
+      recipient: {
+        id: r.user,
+      },
+      message: {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'generic',
+            elements: [{
+              title: `🚨 ${r.name.toUpperCase()}`,
+              subtitle: date,
               buttons: [
                 {
                   type: 'postback',
@@ -28,13 +29,13 @@ const sirenReminderTemplate = async(recID, elem) => {
                   payload: 'REM_SNOOZE',
                 },
               ],
-            },
-          ],
+            }],
+          },
         },
       },
-    },
-  };
-  await call.callSendAPI(messageData);
+    };
+  });
+  await send.callSendAPI(messageData[0]);
 };
 
 const listFormatter = (recipientId, reminders) => {
@@ -69,7 +70,7 @@ const sendListMessage = async(recipientId, elements) => {
       },
     },
   };
-  await call.callSendAPI(messageData);
+  await send.callSendAPI(messageData);
 };
 
 const askTemplate = (text) => {
