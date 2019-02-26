@@ -8,12 +8,23 @@ services:
       - "8080:8080"
     links:
       - mongo
+    networks:
+      - reminders
+    environment:
+      - TZ=America/Toronto
   mongo:
     container_name: mongo
     image: mongo
     environment:
         - MONGO_CONNECTION_STRING_DOCKER=${MONGO_CONNECTION_STRING_DOCKER}
+        - TZ=America/Toronto
     volumes:
       - ./data/db:/data/db
     ports:
       - "27017:27017"
+    networks:
+      - reminders
+networks:
+    reminders:
+     driver: bridge
+

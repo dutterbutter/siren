@@ -12,7 +12,7 @@ const parse = (params) => {
     let reoccurance = params.reoccurance;
     let time = params['date-time-new'];
 
-    return [name, date, reoccurance, time];
+    return [date, name, reoccurance, time];
   }
   if (params['date-time'].length <= 8){
     let d = moment().startOf('day') + 'T' + params['date-time'];
@@ -23,7 +23,7 @@ const parse = (params) => {
   let reoccurance = params.reoccurance;
   let time = params['date-time'].slice(11);
 
-  return [name, date, reoccurance, time];
+  return [date, name, reoccurance, time];
 };
 
 module.exports.parse = parse;

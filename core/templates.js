@@ -48,7 +48,7 @@ const listFormatter = (recipientId, reminders) => {
       subtitle: subtitle,
       buttons: [
         {
-          title: 'Remove',
+          title: `Remove ${r.name}`,
           type: 'postback',
           payload: 'REMOVE_REM',
         },
