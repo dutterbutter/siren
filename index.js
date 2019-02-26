@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const ReminderModel = require('./data/model/reminder');
 const logger = require('./logger/logger');
+const s = require('./worker/scheduler');
 require('dotenv').config();
 
 const app = express();
@@ -18,11 +19,7 @@ const MONGO_CONNECTION_STRING = 'mongodb://localhost:27017/data';
 mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true });
 const connection = mongoose.connection;
 
-// setInterval(() => {
-//         console.log("Checking for reminders to alert... (every 60 sec)");
-//
-//     }, 60000
-// );
+s.schedulerFactory.start();
 
 connection.on('open', () => {
   logger.logInfo('connected to mongo...');
