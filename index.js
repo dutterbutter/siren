@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 require('./routes/routes')(app);
 
-const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost:27017/data';
+const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING_DOCKER || 'mongodb://localhost:27017/data';
 
 s.schedulerFactory.start();
 

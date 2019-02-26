@@ -12,7 +12,7 @@ services:
     container_name: mongo
     image: mongo
     environment:
-        - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
+        - MONGO_CONNECTION_STRING_DOCKER=${MONGO_CONNECTION_STRING_DOCKER}
     volumes:
       - ./data/db:/data/db
     ports:
