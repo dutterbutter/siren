@@ -15,16 +15,31 @@ app.use(express.urlencoded({ extended: true }));
 
 require('./routes/routes')(app);
 
-const MONGO_CONNECTION_STRING = 'mongodb://localhost:27017/data';
-mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true });
-const connection = mongoose.connection;
+const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost:27017/data';
 
 s.schedulerFactory.start();
 
-connection.on('open', () => {
-  logger.logInfo('connected to mongo...');
-  app.listen(PORT, _ => {
+const options = {
+    autoIndex: false,
+    reconnectTries: 30,
+    reconnectInterval: 500,
+    poolSize: 10,
+    bufferMaxEntries: 0,
+    useNewUrlParser: true
+};
+
+const connectWithRetry = () => {
+    logger.logInfo('mongoDB connection with retry...');
+    mongoose.connect(MONGO_CONNECTION_STRING, options).then(()=>{
+        logger.logInfo('connected to mongo...');
+    }).catch(err =>{
+        logger.logError('MongoDB connection unsuccessful, retry after 5 seconds.', err);
+        setTimeout(connectWithRetry, 5000)
+    })
+};
+
+app.listen(PORT, _ => {
     logger.logInfo(`server listening on ${PORT}`);
-  });
 });
 
+connectWithRetry();
