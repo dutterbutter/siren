@@ -16,11 +16,9 @@ const sessionIds = new Map();
 const receivedMsg = (event) => {
   let senderID = event.sender.id;
   let message = event.message;
-
   if (!sessionIds.has(senderID)) {
     sessionIds.set(senderID, uuid.v1());
   }
-
   // You may get a text or attachment but not both
   let messageText = message.text;
   let messageAttachments = message.attachments;
@@ -36,10 +34,11 @@ const receivedPostback = (e) => {
   let senderID = e.sender.id;
   let recipientID = e.recipient.id;
   let payload = e.postback.payload;
+  let title = e.postback.title;
   if (!sessionIds.has(senderID)) {
     sessionIds.set(senderID, uuid.v1());
   }
-  trigger.handleApiPostBack(senderID, recipientID, payload);
+  trigger.handleApiPostBack(senderID, recipientID, payload, title);
 };
 
 const sendToApiAi = (sender, text) => {
