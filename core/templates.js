@@ -42,10 +42,17 @@ const listFormatter = (recipientId, reminders) => {
   const el = reminders.map((r, i) => {
     let momentDate = moment.utc(r.date.toISOString());
     let date = momentDate.format('dddd, MMMM Do YYYY, h:mm:ss a');
-
+    let subtitle = `Reminder Set: ${date}`;
     return {
-      title: `🚨 ${r.name}`,
-      subtitle: date,
+      title: `🚨 ${r.name.toUpperCase()}`,
+      subtitle: subtitle,
+      buttons: [
+            {
+              title: "Remove",
+              type: "postback",
+              payload: "REMOVE_REM",
+            }
+        ]
     };
   });
 
