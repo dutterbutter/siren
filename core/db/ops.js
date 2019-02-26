@@ -50,7 +50,6 @@ const getReminder = async(params, sender) => {
 };
 
 const delReminder = async(params, sender) => {
-  console.log("PRAM",params);
   let docs = params;
   if (params.length > 2) { docs = s.parse(params); }
   try {

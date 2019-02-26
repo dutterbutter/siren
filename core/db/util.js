@@ -2,7 +2,6 @@
 const moment = require('moment');
 
 const parse = (params) => {
-  console.log('PARAMS', params);
   let newDate;
   if ('date-time-new' in params) {
     newDate = params['date-time'].slice(0, 11);

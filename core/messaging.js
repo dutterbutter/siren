@@ -16,7 +16,6 @@ const sessionIds = new Map();
 const receivedMsg = (event) => {
   let senderID = event.sender.id;
   let message = event.message;
-
   if (!sessionIds.has(senderID)) {
     sessionIds.set(senderID, uuid.v1());
   }
@@ -36,7 +35,6 @@ const receivedPostback = (e) => {
   let recipientID = e.recipient.id;
   let payload = e.postback.payload;
   let title = e.postback.title;
-  console.log(e);
   if (!sessionIds.has(senderID)) {
     sessionIds.set(senderID, uuid.v1());
   }

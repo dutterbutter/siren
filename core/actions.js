@@ -29,7 +29,6 @@ const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
       if (!flag) { ops.delReminder(param, sender); }
       break;
     case 'reminders.snooze':
-      console.log('snooze triggered');
       send.sendTextMessage(sender, text);
       if (!flag) { console.log(param); }
       break;
@@ -48,7 +47,6 @@ const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
 };
 
 const handleApiPostBack = async(sender, recipient, payload, title) => {
-  console.log("PSTBACK",payload, title);
   let name;
   if (title.length > 1) { name = title.split(' '); }
   switch (payload) {
