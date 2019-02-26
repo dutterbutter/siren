@@ -5,6 +5,10 @@ const v = require('./verification');
 const msg = require('../core/messaging');
 
 module.exports = (app) => {
+  app.get('/ping/', (req, res) => {
+    logger.logInfo('/ping/ GET');
+    res.status(200);
+  });
   app.get('/webhook/', (req, res) => {
     logger.logInfo('/webhook/ GET');
     if (v.verification) {
