@@ -47,12 +47,12 @@ const listFormatter = (recipientId, reminders) => {
       title: `🚨 ${r.name.toUpperCase()}`,
       subtitle: subtitle,
       buttons: [
-            {
-              title: "Remove",
-              type: "postback",
-              payload: "REMOVE_REM",
-            }
-        ]
+        {
+          title: 'Remove',
+          type: 'postback',
+          payload: 'REMOVE_REM',
+        },
+      ],
     };
   });
 
