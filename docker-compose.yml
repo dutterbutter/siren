@@ -1,0 +1,19 @@
+version: "2"
+services:
+  siren:
+    container_name: siren
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    environment:
+        - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - "27017:27017"

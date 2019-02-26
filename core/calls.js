@@ -21,7 +21,7 @@ const callSendAPI = async(messageData) => {
       }
     }
   } catch (error) {
-    console.log('errrrrrr', error);
+    console.log(error.response.headers);
   }
 };
 
