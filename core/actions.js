@@ -29,6 +29,7 @@ const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
       if (!flag) { ops.delReminder(param, sender); }
       break;
     case 'reminders.snooze':
+      console.log('snooze triggered');
       send.sendTextMessage(sender, text);
       if (!flag) { console.log(param); }
       break;
@@ -46,7 +47,10 @@ const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
   }
 };
 
-const handleApiPostBack = async(sender, recipient, payload) => {
+const handleApiPostBack = async(sender, recipient, payload, title) => {
+  console.log("PSTBACK",payload, title);
+  let name;
+  if (title.length > 1) { name = title.split(' '); }
   switch (payload) {
     case 'SET_REM':
       let text = 'Set a reminder';
@@ -60,10 +64,16 @@ const handleApiPostBack = async(sender, recipient, payload) => {
       msg.sendToApiAi(sender, 'get all reminders');
       break;
     case 'REMOVE_REM':
-      msg.sendToApiAi(sender, 'remove a reminder');
+      ops.delReminder(name, sender);
       break;
     case 'UPDATE_REM':
       msg.sendToApiAi(sender, 'reschedule a reminder');
+      break;
+    case 'REM_SNOOZE':
+      msg.sendToApiAi(sender, 'snooze');
+      break;
+    case 'REMOVE_REM_MENU':
+      msg.sendToApiAi(sender, 'remove');
       break;
     case 'GET_STARTED':
       let response = temp.askTemplate('Would you like to set a reminder?');
