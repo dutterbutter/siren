@@ -29,32 +29,46 @@ const insertReminder = (params, sender) => {
 const putReminder = async(params, sender) => {
   let docs = s.parse(params);
   if (!('reschedule' in params)) {
-    await Reminder.updateOne({user: sender, name: params['old-name']},
-      {$set: {name: docs[1]}});
-    let text = `Reminder ${params['old-name']} has been renamed to ${docs[1]}`;
-    send.sendTextMessage(sender, text);
+    try {
+      await Reminder.updateOne({user: sender, name: params['old-name']},
+        {$set: {name: docs[1]}});
+      let text = `Reminder ${params['old-name']} renamed to ${docs[1]}`;
+      send.sendTextMessage(sender, text);
 
-    return;
+      return;
+    } catch (e) {
+      logger.logError('update error: ', e);
+    }
   }
-  await Reminder.updateOne({user: sender, date: params['date-time']},
-    {$set: {date: docs[0], time: docs[3]}});
-  let text = `Reminder has been rescheduled for ${docs[0]}`;
-  send.sendTextMessage(sender, text);
+  try {
+    await Reminder.updateOne({user: sender, name: docs[1] },
+      {$set: {date: docs[0], time: docs[3]}});
+    let text = `Reminder has been rescheduled for ${docs[0]}`;
+    send.sendTextMessage(sender, text);
+  } catch (e) {
+    logger.logError('update error: ', e);
+  }
 };
 
 const getReminder = async(params, sender) => {
-  // let docs = s.parse(params);
-
   let response = await Reminder.find({user: sender});
-  t.listFormatter(sender, response);
+  if (response.length > 4) {
+    let chunks = t.splitArray(response);
+    t.listFormatter(sender, chunks);
+  } else {
+    t.listFormatterWithOnly4Elements(sender, response);
+  }
+
 };
 
 const delReminder = async(params, sender) => {
-  let docs = params;
-  if (params.length > 2) { docs = s.parse(params); }
   try {
+    let name = params;
+    if (typeof params === 'object') {
+      name = params.name;
+    }
     let response = await Reminder.findOneAndDelete({
-      user: sender, name: docs[1].toLowerCase(),
+      user: sender, name: name.toLowerCase(),
     });
     let text = `Reminder ${response.name} has been deleted`;
     send.sendTextMessage(sender, text);
@@ -63,7 +77,19 @@ const delReminder = async(params, sender) => {
   }
 };
 
+const getOne = async(params, sender) => {
+  try {
+    let response = await Reminder.findOne({
+      user: sender, name: params['name'],
+    });
+    return response;
+  } catch (e) {
+    logger.logError('error ', e);
+  }
+};
+
 module.exports.insertReminder = insertReminder;
 module.exports.putReminder = putReminder;
 module.exports.getReminder = getReminder;
 module.exports.delReminder = delReminder;
+module.exports.getOne = getOne;

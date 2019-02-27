@@ -25,7 +25,7 @@ const sirenReminderTemplate = async(params) => {
                   payload: 'REM_CONFIRM',
                 }, {
                   type: 'postback',
-                  title: 'Snooze',
+                  title: `Snooze ${r.name}`,
                   payload: 'REM_SNOOZE',
                 },
               ],
@@ -38,7 +38,51 @@ const sirenReminderTemplate = async(params) => {
   await send.callSendAPI(messageData[0]);
 };
 
-const listFormatter = (recipientId, reminders) => {
+const splitArray = (elements) => {
+  let perChunk = 3; // items per chunk
+
+  return elements.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / perChunk);
+
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = [];
+    }
+
+    resultArray[chunkIndex].push(item);
+
+    return resultArray;
+  }, []);
+};
+
+
+const listFormatter = (sender, reminders) => {
+  for (let i = 0; i < reminders.length; i++) {
+    let el = reminders[i].map((element, i) => {
+      let momentDate = moment.utc(element.date.toISOString());
+      let date = momentDate.format('dddd, MMMM Do YYYY, h:mm:ss a');
+      let subtitle = `Reminder Set: ${date}`;
+      return {
+        title: `🚨 ${element.name.toUpperCase()}`,
+        subtitle: subtitle,
+        buttons: [
+          {
+            title: `Remove ${element.name}`,
+            type: 'postback',
+            payload: 'REMOVE_REM',
+          },
+        ],
+      };
+    });
+    const obj = {
+      template_type: 'list',
+      top_element_style: 'compact',
+      elements: JSON.stringify(el),
+    };
+    sendListMessage(sender, obj);
+  }
+};
+
+const listFormatterWithOnly4Elements = (sender, reminders) => {
   const el = reminders.map((r, i) => {
     let momentDate = moment.utc(r.date.toISOString());
     let date = momentDate.format('dddd, MMMM Do YYYY, h:mm:ss a');
@@ -61,7 +105,7 @@ const listFormatter = (recipientId, reminders) => {
     top_element_style: 'compact',
     elements: JSON.stringify(el),
   };
-  sendListMessage(recipientId, obj);
+  sendListMessage(sender, obj);
 };
 
 
@@ -108,3 +152,5 @@ module.exports.sirenReminderTemplate = sirenReminderTemplate;
 module.exports.sendListMessage = sendListMessage;
 module.exports.listFormatter = listFormatter;
 module.exports.askTemplate = askTemplate;
+module.exports.splitArray = splitArray;
+module.exports.listFormatterWithOnly4Elements = listFormatterWithOnly4Elements;

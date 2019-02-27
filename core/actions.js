@@ -30,7 +30,13 @@ const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
       break;
     case 'reminders.snooze':
       send.sendTextMessage(sender, text);
-      if (!flag) { console.log(param); }
+      let name = ctx[0].parameters.name;
+
+      if (!flag) {
+        param['reschedule'] = true;
+        param['name'] = name;
+        ops.putReminder(param, sender);
+      }
       break;
     case 'reminders.get':
       send.sendTextMessage(sender, text);
@@ -48,7 +54,7 @@ const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
 
 const handleApiPostBack = async(sender, recipient, payload, title) => {
   let name;
-  if (title.length > 1) { name = title.split(' '); }
+  if (title.length > 1) { name = title.slice(7); }
   switch (payload) {
     case 'SET_REM':
       let text = 'Set a reminder';

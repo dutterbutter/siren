@@ -14,9 +14,14 @@ const parse = (params) => {
 
     return [date, name, reoccurance, time];
   }
-  if (params['date-time'].length <= 8){
-    let d = moment().startOf('day') + 'T' + params['date-time'];
-    console.log(d);
+  if (params['date-time'].length <= 8) {
+    let d = moment().format('YYYY-MM-DD') + 'T' + params['date-time'] + 'Z';
+    let name = params.name;
+    let date = d;
+    let reoccurance = params.reoccurance;
+    let time = params['date-time'].slice(11);
+
+    return [date, name, reoccurance, time];
   }
   let name = params.name;
   let date = params['date-time'];
