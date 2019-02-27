@@ -1,9 +1,9 @@
-version: "2"
+version: "3"
 services:
   siren:
     container_name: siren
     restart: always
-    build: .
+    build: ""
     ports:
       - "8080:8080"
     links:
@@ -12,6 +12,7 @@ services:
       - reminders
     environment:
       - TZ=America/Toronto
+
   mongo:
     container_name: mongo
     image: mongo
