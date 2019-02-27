@@ -1,7 +1,7 @@
 /*eslint-disable */
 const mongoose = require('mongoose');
 const moment = require('moment');
-const temp = require('../../core/templates');
+const temp = require('../../templates');
 let Schema = mongoose.Schema;
 
 const reminderSchema = new Schema({

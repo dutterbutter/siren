@@ -1,5 +1,5 @@
 'use strict';
-const ReminderModel = require('../data/model/reminder');
+const ReminderModel = require('../core/db/model/reminder');
 
 const notificationWorkerFactory = () => {
   return {

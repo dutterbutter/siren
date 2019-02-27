@@ -2,10 +2,6 @@
 const logger = require('../logger/logger');
 const axios = require('axios');
 
-// * Call the Send API. The message data goes in the body. If successful, we'll
-// * get the message id in a response
-// *
-// */
 const callSendAPI = async(messageData) => {
   const url = 'https://graph.facebook.com/v3.0/me/messages?access_token='
         + process.env.FB_PAGE_ACCESS;

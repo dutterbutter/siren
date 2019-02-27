@@ -2,7 +2,7 @@
 /*eslint-disable */
 const express = require('express');
 const mongoose = require('mongoose');
-const ReminderModel = require('./data/model/reminder');
+const ReminderModel = require('./core/db/model/reminder');
 const logger = require('./logger/logger');
 const s = require('./worker/scheduler');
 require('dotenv').config();

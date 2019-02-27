@@ -31,7 +31,6 @@ const handleApiAiAction = (sender, act, text, ctx, param, flag) => {
     case 'reminders.snooze':
       send.sendTextMessage(sender, text);
       let name = ctx[0].parameters.name;
-
       if (!flag) {
         param['reschedule'] = true;
         param['name'] = name;
@@ -75,6 +74,9 @@ const handleApiPostBack = async(sender, recipient, payload, title) => {
       break;
     case 'REM_SNOOZE':
       msg.sendToApiAi(sender, 'snooze');
+      break;
+    case 'REM_CONFIRM':
+      send.sendTextMessage(sender, 'Great, thank you for confirming! 😁');
       break;
     case 'REMOVE_REM_MENU':
       msg.sendToApiAi(sender, 'remove');

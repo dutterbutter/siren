@@ -1,6 +1,5 @@
 'use strict';
 const uuid = require('uuid');
-
 const apiai = require('apiai');
 const util = require('./util');
 const logger = require('../logger/logger');

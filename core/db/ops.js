@@ -52,13 +52,20 @@ const putReminder = async(params, sender) => {
 
 const getReminder = async(params, sender) => {
   let response = await Reminder.find({user: sender});
-  if (response.length > 4) {
-    let chunks = t.splitArray(response);
-    t.listFormatter(sender, chunks);
-  } else {
-    t.listFormatterWithOnly4Elements(sender, response);
+  switch (response.length) {
+    case 1:
+      let momentDate = moment.utc(response[0].date.toISOString());
+      let date = momentDate.format('dddd, MMMM Do YYYY, h:mm:ss a');
+      let msg = `Reminder ${response[0].name.toUpperCase()} set for ${date}`;
+      send.sendTextMessage(sender, msg);
+      break;
+    case 4:
+      t.listFormatterWithOnly4Elements(sender, response);
+      break;
+    default:
+      let chunks = t.splitArray(response);
+      t.listFormatter(sender, chunks);
   }
-
 };
 
 const delReminder = async(params, sender) => {
