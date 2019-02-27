@@ -53,6 +53,10 @@ const putReminder = async(params, sender) => {
 const getReminder = async(params, sender) => {
   let response = await Reminder.find({user: sender});
   switch (response.length) {
+    case 0:
+        let text = "You have no reminders set!";
+        send.sendTextMessage(sender, text);
+        break;
     case 1:
       let momentDate = moment.utc(response[0].date.toISOString());
       let date = momentDate.format('dddd, MMMM Do YYYY, h:mm:ss a');
