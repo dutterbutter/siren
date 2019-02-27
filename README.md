@@ -3,20 +3,52 @@
 
 Conversational chatbot for reminders using Facebook messenger and Dialogflow.
 
+## Prerequisites
+
+- Facebook account
+- Facebook page
+- DialogFlow account
+
 ## Install
+
+```
+git clone <repo>
+```
 
 ```
 npm install
 ```
 
-## Usage
+## Usage 
+
+> First set up an .env file that looks similiar to this: 
 
 ```
-npm run start
+FB_PAGE_ACCESS=<YOUR_PAGE_ACCESS_TOKEN>
+FB_VERIFY_TOKEN=<YOUR_VERIFY_TOKEN>
+FB_APP_SECRET=<YOUR_FB_SECRET_TOKEN>
+DIALOG_FLOW_TOKEN=<YOUR_DIALOGFLOW_TOKEN>
 ```
 
-## Contributing
+> To run locally:
 
-PRs accepted.
+```
+node index.js
+```
 
-## License
+> To run with docker:
+
+Add the following to your `.env` file:
+
+```
+MONGO_CONNECTION_STRING=mongodb://mongo:27017/data
+```
+
+> Then run: 
+
+```
+docker-compose up --build
+```
+
+Use [ngrok](https://ngrok.com/) for development, as Facebook requires https.
+ 

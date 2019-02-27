@@ -1,5 +1,4 @@
 'use strict';
-
 const logger = require('../logger/logger');
 const v = require('./verification');
 const msg = require('../core/messaging');

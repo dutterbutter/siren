@@ -19,14 +19,14 @@ const receivedMsg = (event) => {
   if (!sessionIds.has(senderID)) {
     sessionIds.set(senderID, uuid.v1());
   }
-  // You may get a text or attachment but not both
   let messageText = message.text;
   let messageAttachments = message.attachments;
 
   if (messageText) {
     sendToApiAi(senderID, messageText);
   } else if (messageAttachments) {
-    // handleMessageAttachments(messageAttachments, senderID);
+    let text = 'Sorry siren does not support attachments yet';
+    sendToApiAi(senderID, text);
   }
 };
 

@@ -17,7 +17,7 @@ services:
     container_name: mongo
     image: mongo
     environment:
-        - MONGO_CONNECTION_STRING_DOCKER=${MONGO_CONNECTION_STRING_DOCKER}
+        - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
         - TZ=America/Toronto
     volumes:
       - ./data/db:/data/db
