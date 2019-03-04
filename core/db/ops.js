@@ -43,7 +43,8 @@ const putReminder = async(params, sender) => {
   try {
     await Reminder.updateOne({user: sender, name: docs[1] },
       {$set: {date: docs[0], time: docs[3]}});
-    let text = `Reminder has been rescheduled for ${docs[0]}`;
+    let dateF = moment.utc(docs[0]).format('dddd, MMMM Do YYYY, h:mm:ss a');
+    let text = `Reminder has been rescheduled for ${dateF}`;
     send.sendTextMessage(sender, text);
   } catch (e) {
     logger.logError('update error: ', e);
